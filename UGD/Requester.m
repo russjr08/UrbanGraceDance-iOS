@@ -45,7 +45,7 @@ static Requester *instance = nil;
     return [NSString stringWithFormat:@"%@%@/", DEFAULT_ENDPOINT, endpoint];
 }
 
--(void) login:(NSString *)username withPassword:(NSString *)password {
+-(void) login:(NSString *)username withPassword:(NSString *)password withCompletion: (void (^)(bool))callback {
     
     NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: nil delegateQueue: [NSOperationQueue mainQueue]];
@@ -55,7 +55,7 @@ static Requester *instance = nil;
     NSString * params = [NSString stringWithFormat:@"username=%@&password=%@", username, password];
     [urlRequest setHTTPMethod:@"POST"];
     [urlRequest setHTTPBody:[params dataUsingEncoding:NSUTF8StringEncoding]];
-    
+        
     NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest
                                                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                                                            NSLog(@"Response:%@ %@\n", response, error);
@@ -65,8 +65,14 @@ static Requester *instance = nil;
                                                                 NSError *parsingError;
                                                                
                                                                 NSDictionary *serializedResults = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parsingError];
-                                                                   
-                                                                self.token = serializedResults[@"token"];
+                                                               
+                                                               
+                                                               if(parsingError != nil || serializedResults[@"error"] != nil) {
+                                                                   callback(NO);
+                                                                   return;
+                                                               }
+                                                               
+                                                               self.token = serializedResults[@"token"];
                                                                
                                                                
                                                                // TODO: Persist token to disk for later.
@@ -79,17 +85,14 @@ static Requester *instance = nil;
                                                                [defaults setObject: self.token forKey: @"auth-token"];
                                                                [defaults synchronize];
                                                                NSLog(@"Saved token to disk.");
+                                                               
+                                                               callback(YES);
                                                            }
                                                            
                                                        }];
     
     [dataTask resume]; // Not really resume... but 'start'
     
-//    NSURL *url = [NSURL URLWithString: [self getEndpoint:@"login"]];
-//    
-//    NSData *data = [NSData dataWithContentsOfURL:url];
-//    
-
 }
 
 -(bool) isLoggedIn {
@@ -97,7 +100,6 @@ static Requester *instance = nil;
 }
 
 -(User *) getLoggedInUser {
-    User *user = [[User alloc] init];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[self getEndpoint:@"me"]]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
@@ -118,7 +120,8 @@ static Requester *instance = nil;
     NSError *parsingError;
     
     NSDictionary *serializedResults = [NSJSONSerialization JSONObjectWithData:response options:0 error:&parsingError];
-    
+    User *user = [[User alloc] initWithJson:serializedResults];
+
     return user;
 }
 

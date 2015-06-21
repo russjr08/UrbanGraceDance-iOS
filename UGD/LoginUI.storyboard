@@ -107,7 +107,7 @@
                                 <rect key="frame" x="277" y="341" width="46" height="30"/>
                                 <animations/>
                                 <state key="normal" title="Login!">
-                                    <color key="titleColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.0" green="0.45385834868717012" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <variation key="widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="177" y="336" width="46" height="30"/>
@@ -128,18 +128,26 @@
                                     <action selector="loginBtnClick:" destination="d8o-CF-454" eventType="touchUpInside" id="vLo-vA-ogS"/>
                                 </connections>
                             </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Invalid credentials!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mHc-Yy-C4V">
+                                <rect key="frame" x="20" y="151" width="560" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="label" destination="mHc-Yy-C4V" id="Sne-jj-LTG"/>
                         <outlet property="passwordField" destination="hhe-2W-ZPj" id="ufd-ff-Hw7"/>
                         <outlet property="usernameField" destination="nxX-YV-TJZ" id="2qt-AJ-xDU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r1w-Vr-bp5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="304.5" y="288.75"/>
+            <point key="canvasLocation" x="304" y="288"/>
         </scene>
     </scenes>
 </document>

@@ -14,7 +14,7 @@
 -(instancetype) initWithJson:(NSDictionary *)data {
     self = [super init];
     
-    self._id = data[@"id"];
+    self._id = data[@"_id"];
     self.username = data[@"username"];
     self.first_name = data[@"first_name"];
     self.last_name = data[@"last_name"];

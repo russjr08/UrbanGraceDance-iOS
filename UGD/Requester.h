@@ -14,7 +14,7 @@
 @property NSString *token;
 @property bool loggedIn;
 
--(void) login:(NSString *)username withPassword:(NSString *) password;
+-(void) login:(NSString *)username withPassword:(NSString *) password withCompletion: (void (^)(bool))callback;
 
 -(bool) isLoggedIn;
 
