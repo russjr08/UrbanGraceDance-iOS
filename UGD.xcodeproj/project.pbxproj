@@ -50,6 +50,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E34213B1B47537200D3B30E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0EA8C5CD1B352B0A005B7EC9 /* User.m */,
+				0EA8C5CC1B352B0A005B7EC9 /* User.h */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		0EA8C5A51B352AE7005B7EC9 = {
 			isa = PBXGroup;
 			children = (
@@ -69,12 +78,11 @@
 		0EA8C5B01B352AE7005B7EC9 /* UGD */ = {
 			isa = PBXGroup;
 			children = (
+				0E34213B1B47537200D3B30E /* Models */,
 				0EB60F9B1B35446E00A96021 /* Home */,
 				0EA8C5D11B352B21005B7EC9 /* Login */,
 				0EA8C5CA1B352B0A005B7EC9 /* Requester.h */,
 				0EA8C5CB1B352B0A005B7EC9 /* Requester.m */,
-				0EA8C5CC1B352B0A005B7EC9 /* User.h */,
-				0EA8C5CD1B352B0A005B7EC9 /* User.m */,
 				0EA8C5B41B352AE7005B7EC9 /* AppDelegate.h */,
 				0EA8C5B51B352AE7005B7EC9 /* AppDelegate.m */,
 				0EA8C5BD1B352AE7005B7EC9 /* Assets.xcassets */,

@@ -11,10 +11,6 @@
 
 @interface LoginViewController ()
 
-@property (weak, nonatomic) IBOutlet UITextField *usernameField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordField;
-
-@property (weak, nonatomic) IBOutlet UILabel *label;
 
 @end
 
@@ -22,8 +18,6 @@
     Requester *requester;
 }
 
-@synthesize usernameField, passwordField;
-@synthesize label;
 
 
 
@@ -48,39 +42,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-- (IBAction)loginBtnClick:(id)sender {
+- (IBAction)loginBtnClicked:(id)sender {
     
-    [requester login: usernameField.text withPassword: passwordField.text withCompletion:^(bool loggedIn) {
-        if (loggedIn) {
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController *vc = [storyboard instantiateInitialViewController];
-            [self presentViewController:vc animated:YES completion:nil];
-        } else {
-            [self animateLoginLabel];
-        }
-    }];   
-
-}
-
--(void) animateLoginLabel {
-    
-    [label setHidden: NO];
-    
-    // Save the original configuration.
-    CGRect initialFrame = label.frame;
-    
-    // Displace the label so it's hidden outside of the screen before animation starts.
-    CGRect displacedFrame = initialFrame;
-    displacedFrame.origin.y = -100;
-    label.frame = displacedFrame;
-    
-    // Restore label's initial position during animation.
-    [UIView animateWithDuration:.6 animations:^{
-        label.frame = initialFrame;
-    }];
+    NSString *stringURL = @"http://192.168.1.99:3000/auth/authorize";
+    NSURL *url = [NSURL URLWithString:stringURL];
+    [[UIApplication sharedApplication] openURL:url];
     
 }
+
 
 /*
 #pragma mark - Navigation

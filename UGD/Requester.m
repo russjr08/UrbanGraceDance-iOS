@@ -45,55 +45,6 @@ static Requester *instance = nil;
     return [NSString stringWithFormat:@"%@%@/", DEFAULT_ENDPOINT, endpoint];
 }
 
--(void) login:(NSString *)username withPassword:(NSString *)password withCompletion: (void (^)(bool))callback {
-    
-    NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate: nil delegateQueue: [NSOperationQueue mainQueue]];
-    
-    NSURL *url = [NSURL URLWithString:[self getEndpoint: @"login"]];
-    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
-    NSString * params = [NSString stringWithFormat:@"username=%@&password=%@", username, password];
-    [urlRequest setHTTPMethod:@"POST"];
-    [urlRequest setHTTPBody:[params dataUsingEncoding:NSUTF8StringEncoding]];
-        
-    NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithRequest:urlRequest
-                                                       completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                           NSLog(@"Response:%@ %@\n", response, error);
-                                                           if(error == nil)
-                                                           {
-                                                               
-                                                                NSError *parsingError;
-                                                               
-                                                                NSDictionary *serializedResults = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parsingError];
-                                                               
-                                                               
-                                                               if(parsingError != nil || serializedResults[@"error"] != nil) {
-                                                                   callback(NO);
-                                                                   return;
-                                                               }
-                                                               
-                                                               self.token = serializedResults[@"token"];
-                                                               
-                                                               
-                                                               // TODO: Persist token to disk for later.
-                                                               
-                                                               NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                               NSLog(@"Data = %@",text);
-                                                               NSLog(@"Token = %@", self.token);
-                                                               
-                                                               NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                                                               [defaults setObject: self.token forKey: @"auth-token"];
-                                                               [defaults synchronize];
-                                                               NSLog(@"Saved token to disk.");
-                                                               
-                                                               callback(YES);
-                                                           }
-                                                           
-                                                       }];
-    
-    [dataTask resume]; // Not really resume... but 'start'
-    
-}
 
 -(bool) isLoggedIn {
     return loggedIn;

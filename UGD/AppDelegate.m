@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Requester.h"
 
 @interface AppDelegate ()
 
@@ -40,6 +41,32 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(nonnull UIApplication *)application openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation {
+    
+    NSString *stringified = [url absoluteString];
+    
+    stringified = [stringified stringByReplacingOccurrencesOfString:@"ugd://authorize/" withString:@""];
+    
+    NSLog(@"Token = %@", stringified);
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject: stringified forKey: @"auth-token"];
+    [defaults synchronize];
+    NSLog(@"Saved token to disk.");
+    
+    [Requester getInstance].token = stringified;
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *vc = [storyboard instantiateInitialViewController];
+    
+    #define ROOTVIEW [[[UIApplication sharedApplication] keyWindow] rootViewController]
+
+    [ROOTVIEW presentViewController:vc animated:YES completion:nil];
+    
+    
+    return YES;
 }
 
 @end
